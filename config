@@ -1,0 +1,11 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = https://github.com/labarrch/PROJET-INFO
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[user]
+	name = labarrch
+	email = charleslabarre91@gmail.com
