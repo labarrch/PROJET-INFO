@@ -3,8 +3,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "lexeur_json.h"
-
 
 int lexer(string dot, string json, vector<string>& lChainDot, vector<string>& lChainJson){
 
