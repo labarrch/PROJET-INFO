@@ -1,6 +1,6 @@
 digraph test1{
 A1 [label="input"];
-A2 [label="input"];
+A2 [label=" input"];
 
 S1   [label="output"];
 

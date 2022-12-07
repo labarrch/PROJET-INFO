@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <string.h>
 #include <vector>
 
 using namespace std;
@@ -69,6 +70,14 @@ int main (){
 		cout << "Erreur fichier" << endl;
 		return 1;
 	}
+
+for (i=0; i<lChainDot.size(); i++){
+	cout << lChainDot[i] << endl;
+}
+
+for (i=0; i<lChainJson.size(); i++){
+	cout << lChainJson[i] << endl;
+}
 
  dotFile.close();
  jsonFile.close();

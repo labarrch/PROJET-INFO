@@ -1,23 +1,38 @@
 using namespace std;
 
 #include "lexeur_d.cpp"
-#include "blocs.cpp"
-#include "and2.cpp"
-#include "or2.cpp"
-#include "input.cpp"
-#include "output.cpp"
+#include "blocs.h"
+#include "and2.h"
+#include "or2.h"
+#include "input.h"
+#include "output.h"
 #include <iostream>
 #include <vector>
 
 int main(){
 
-    output o1("o1");
+  output o1("o1");
 
-    and2 a2("a2");
+  or2 a2("a2");
+  //cout << a2.name << endl;
+
+  input i1("i1");
+  input i2("i2");
+/*
+  cout << a2.in1 << endl;
+  cout << a2.in2 << endl;
+
+  a2.calculate(o1.netValue);
+
+  cout << o1.netValue << endl;
+  */
+    //output o1("o1");
+
+    //and2 a2("a2");
     //cout << a2.name << endl;
 
-    input i1("i1", a2.in1);
-    input i2("i2", a2.in2);
+    //input i1("i1", a2.in1);
+    //input i2("i2", a2.in2);
 
     //cout << a2.in1 << endl;
     //cout << a2.in2 << endl;
@@ -45,41 +60,23 @@ int main(){
       }
     }
 
-    /*for(int i=0; i<longueur; i++){
+    for(int i=0; i<longueur; i++){
       for(int j=maintab[i].size()-1; j>0; j--){
         if (maintab[i][j].type == "output"){
-          bufAdr = &maintab[i][j].netValue;
+
+          bufAdr = maintab[i][j].getAdr();
         }
         else if (maintab[i][j].type == "function"){
-          maintab[i][j].out = bufAdr;
-          if (maintab[i][j].in1 == NULL){
-              bufAdr = &maintab[i][j].in1;
-          }
-          else {
-              bufAdr = &maintab[i][j].in1;
-          }
+          maintab[i][j].setDest(*bufAdr);
+          bufAdr = maintab[i][j].getAdr();
         }
         else if (maintab[i][j].type == "input"){
-              maintab[i][j].netValue = bufAdr
+              maintab[i][j].setDest(*bufAdr);
         }
         }
-      }
+
     }
 
 
-/*output o1("o1");
 
-or2 a2("a2");
-cout << a2.name << endl;
-
-input i1("i1", a2.in1, true);
-input i2("i2", a2.in2, false);
-
-cout << a2.in1 << endl;
-cout << a2.in2 << endl;
-
-a2.calculate(o1.netValue);
-
-cout << o1.netValue << endl;
-*/
 }

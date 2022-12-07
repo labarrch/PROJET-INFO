@@ -1,27 +1,27 @@
-class input : public bloc {
-  public :
-  input(string nom, bool& adrSuiv, bool value);
-  input(string nom, bool& adrSuiv);
-  ~input();
-    bool *netValue;
-};
+#include "input.h"
 
-
-
+input::input(string nom){
+    name = nom;
+  type = "input";
+}
 
 
 input::input(string nom, bool& adrSuiv, bool value){
-  name = nom;
+    name = nom;
   type = "input";
   netValue = &adrSuiv;
   *netValue = value;
 }
 
 input::input(string nom, bool& adrSuiv){
-  name = nom;
+    name = nom;
   type = "input";
   netValue = &adrSuiv;
 }
 
 input::~input(){
+}
+
+void input::setDest(bool &dest){
+  this->netValue = &dest;
 }

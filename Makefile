@@ -1,13 +1,9 @@
-makefile :
+CFLAGS=-g -Wall
 
-lexer : lexeur.cpp
-	g++ -o lexer lexeur.cpp
-	./lexer
+all: parser
 
-lexer_json.o : lexeur_json.cpp lexeur_json.h
-	g++ -o lexeur_json.cpp
-	./lexer
+parser : parser.o output.o input.o blocs.o and2.o or2.o
+	g++ -o parser $^ $(LDFLAGS)
 
-simulateur : simulateur.cpp lexeur_json.cpp
-	g++ -o simulateur simulateur.cpp lexeur_json.cpp
-	./simulateur
+%.o:%.cpp
+	g++ $(CFLAGS) -c -g $^
