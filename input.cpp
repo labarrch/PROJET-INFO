@@ -1,8 +1,24 @@
-#include "input.h"
+
+class input : public bloc {
+  public :
+  input(string nom, bool& adrSuiv, bool value);
+  input(string nom, bool& adrSuiv);
+  input(string nom);
+  ~input();
+  bool *netValue;
+  void setDest(bool* dest);
+  void setVal(bool val);
+};
+
 
 input::input(string nom){
-    name = nom;
+  name = nom;
   type = "input";
+}
+
+
+void input::setVal(bool val){
+  *netValue = val;
 }
 
 
@@ -22,6 +38,6 @@ input::input(string nom, bool& adrSuiv){
 input::~input(){
 }
 
-void input::setDest(bool &dest){
-  this->netValue = &dest;
+void input::setDest(bool* dest){
+  netValue = dest;
 }
