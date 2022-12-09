@@ -4,14 +4,22 @@
 #include <vector>
 #include "lexeur_d.h"
 
-using namespace std;
+int lineProcess(const string line, vector<string>& list); //Fonction qui traite le lexage d'une ligne de dot
+int lineProcessJson(const string line, vector<string>& list);  //Fonction qui traite le lexage d'une ligne de json
+int characAlpha(const string charac); //Fonction de vérifiction d'apartenance aux caractères alphanumériques autorisés en dot
+int characSymb(const string charac);  //Fonction de vérifiction d'apartenance aux symboles/poncuations autorisés en dot
+int characAlphaJson(const string charac);  //Fonction de vérifiction d'apartenance aux caractères alphanumériques autorisés en json
+int characSymbJson(const string charac);   //Fonction de vérifiction d'apartenance aux symboles/poncuations autorisés en json
+int characWaveJson(const string charac, int lineCount);   //Fonction de vérifiction d'apartenance aux symboles/poncuations autorisés en json
+int lexeur(const char* fichierDot, const char* fichierJson,vector<string>& lChainDot, vector<string>& lChainJson);   //Fonction qui réalise le lexage des fichiers
+void lectureChaine(vector<string>& chaine);
 
 
-int characAlpha(string charac){
+int characAlpha(const string charac){
 	string buf;
 	ifstream alphabet;
 
-	alphabet.open("alphabet.txt",ios::in);
+	alphabet.open("lex_grammar/alphabet.txt",ios::in);
 
 	while(getline(alphabet, buf)){
 		if(buf==charac){
@@ -22,11 +30,11 @@ int characAlpha(string charac){
 	alphabet.close();
 	return 0;
 }
-int characSymb(string charac){
+int characSymb(const string charac){
 	string buf;
 	ifstream symboles;
 
-	symboles.open("symboles.txt",ios::in);
+	symboles.open("lex_grammar/symboles.txt",ios::in);
 
 	while(getline(symboles, buf)){
 		if(buf==charac){
@@ -37,11 +45,11 @@ int characSymb(string charac){
 	symboles.close();
 	return 0;
 }
-int characAlphaJson(string charac){
+int characAlphaJson(const string charac){
 	string buf;
 	ifstream alphabet_json;
 
-	alphabet_json.open("alphabetj.txt",ios::in);
+	alphabet_json.open("lex_grammar/alphabetj.txt",ios::in);
 
 	while(getline(alphabet_json, buf)){
 		if(buf==charac){
@@ -52,11 +60,11 @@ int characAlphaJson(string charac){
 	alphabet_json.close();
 	return 0;
 }
-int characSymbJson(string charac){
+int characSymbJson(const string charac){
 	string buf;
 	ifstream symboles_json;
 
-	symboles_json.open("symbolesj.txt",ios::in);
+	symboles_json.open("lex_grammar/symbolesj.txt",ios::in);
 
 	while(getline(symboles_json, buf)){
 		if(buf==charac){
@@ -66,16 +74,35 @@ int characSymbJson(string charac){
 
 	return 0;
 }
+int characWaveJson(const string charac){
+	string buf;
+	ifstream wave_json;
 
-int lineProcess(string line, vector<string>& list){
+	wave_json.open("lex_grammar/wavej.txt",ios::in);
+
+	while(getline(wave_json, buf)){
+		if(buf==charac){
+			return 1;
+			}
+	}
+
+	return 0;
+
+}
+
+int lineProcess(const string line, vector<string>& list){
 		string buf;
 		string car;
 
 		int i=0;
+		bool labelName=false;
 
 		while (line[i]){
 			car = line[i];
-			if(characAlpha(car)){
+			if(labelName==true&&line[i]!='"'){
+			 buf += line[i];
+			}
+			else if(characAlpha(car)){
 				buf += line[i];
 				if (i==line.length()-1){
 					list.push_back(buf);
@@ -97,6 +124,22 @@ int lineProcess(string line, vector<string>& list){
 				list.push_back(buf);
 				buf.erase();
 			}
+			else if(line[i]=='"'){
+				if(buf.length()){
+					list.push_back(buf);
+				}
+				buf.erase();
+				buf += line[i];
+				list.push_back(buf);
+				buf.erase();
+				if(labelName==false){
+					labelName=true;
+				}
+				else{
+					labelName=false;
+				}
+
+			}
 			else if(line[i]=='-'&&line[i+1]=='>'){
 				if(buf.length()){
 					list.push_back(buf);
@@ -108,6 +151,7 @@ int lineProcess(string line, vector<string>& list){
 				buf.erase();
 				i++;
 			}
+
 			else{
 				return 0;
 			}
@@ -115,26 +159,49 @@ int lineProcess(string line, vector<string>& list){
 		}
 	return 1;
 }
-int lineProcessJson(string line, vector<string>& list){
+int lineProcessJson(const string line, vector<string>& list, int lineCount){
 		string buf;
 		string car;
+
 		int i=0;
+		bool labelName=false;
+		bool waveDefine=false;
 
 		while (line[i]){
 			car = line[i];
-			if(characAlphaJson(car)){
+			if(labelName&&line[i]!='"'){
+				if (list[list.size()-3]=="name"){
+					buf += line[i];
+				}
+				else{
+				}
+
+			}
+			else if(waveDefine&&characWaveJson(car)){
+				if (list[list.size()-3]=="wave"){
+					buf += line[i];
+				}
+				else{
+				}
+			}
+			else if(characAlphaJson(car)){
 				buf += line[i];
 				if (i==line.length()-1){
 					list.push_back(buf);
 					buf.erase();
 				}
 			}
-			else if(line[i]==' '){
+			else if(!waveDefine&&line[i]==' '){
 				if(buf.length()){
 					list.push_back(buf);
 				}
 				buf.erase();
 			}
+			else if(waveDefine&&line[i]==' '){
+				cout<<"test"<<endl;
+			}
+			/*else if(line[i]==' '&&list[list.size()-3]=="wave"){
+			}*/
 			else if(characSymbJson(car)){
 				if(buf.length()){
 					list.push_back(buf);
@@ -144,6 +211,40 @@ int lineProcessJson(string line, vector<string>& list){
 				list.push_back(buf);
 				buf.erase();
 			}
+
+			else if(line[i]=='"'){
+				if(buf.length()){
+					list.push_back(buf);
+				}
+				else{
+				}
+
+				buf.erase();
+				buf += line[i];
+				list.push_back(buf);
+				buf.erase();
+
+				if(list[list.size()-3]=="name"||list[list.size()-5]=="name"){
+						if(!labelName){
+							labelName=true;
+						}
+						else{
+							labelName=false;
+						}
+				}
+				else if(list[list.size()-3]=="wave"||list[list.size()-5]=="wave"){
+						if(!waveDefine){
+							waveDefine=true;
+						}
+						else{
+							waveDefine=false;
+						}
+				}
+				else{
+					return 0;
+				}
+
+			}
 			else{
 				return 0;
 			}
@@ -152,7 +253,7 @@ int lineProcessJson(string line, vector<string>& list){
 	return 1;
 }
 
-int lexeur(vector<string>& lChainDot, vector<string>& lChainJson){
+int lexeur(const char* fichierDot, const char* fichierJson, vector<string>& lChainDot, vector<string>& lChainJson){
 
 	string line;
 	int i = 0, lineCount=0;
@@ -160,55 +261,60 @@ int lexeur(vector<string>& lChainDot, vector<string>& lChainJson){
   ifstream dotFile;
   ifstream jsonFile;
 
-  dotFile.open("dotFile.txt",ios::in);
-  jsonFile.open("jsonFile.txt",ios::in);
+  dotFile.open(fichierDot,ios::in);
+  jsonFile.open(fichierJson,ios::in);
 
 	if(dotFile){
 		while (getline(dotFile, line)){
 			lineCount++;
 			if(lineProcess(line, lChainDot)){
-				cout << "Lexage ligne "<<lineCount<<" terminé" << endl;
+				cout << "DOT/Lexage ligne "<<lineCount<<" terminé" << endl;
 			}
 			else{
-				cout<<"Erreur de syntaxe à la ligne "<<lineCount<<endl<<"Fin de Lexage"<<endl;;
+				cout<<"DOT/Erreur de syntaxe à la ligne "<<lineCount<<endl<<"Fin de Lexage"<<endl;
 				return 1;
 			}
 		}
 	}
 
 	else{
-		cout << "Erreur fichier" << endl;
+		cout << "Erreur : fichier dot illisible ou inexistant" << endl;
 		return 1;
 	}
 
-
-
+	cout << "Lexage dot terminé"<<endl;
 
 	lineCount = 0;
-
-
 
 	if(jsonFile){
 		while (getline(jsonFile, line)){
 			lineCount++;
-			if(lineProcessJson(line, lChainJson)){
-				cout << "Lexage ligne "<<lineCount<<" terminé" << endl;
+			if(lineProcessJson(line, lChainJson, lineCount)){
+				cout << "JSON/Lexage ligne "<<lineCount<<" terminé" << endl;
 			}
 			else{
-				cout<<"Erreur de syntaxe à la ligne "<<lineCount<<endl<<"Fin de lexage"<<endl;;
+				cout<<"JSON/Erreur de syntaxe à la ligne "<<lineCount<<endl<<"Fin de lexage"<<endl;;
 				return 1;
 			}
 		}
 	}
 
 	else{
-		cout << "Erreur fichier" << endl;
+		cout << "Erreur : fichier json illisible ou inexistant" << endl;
 		return 1;
 	}
+
+cout << "Lexage json terminé"<<endl;
 
  dotFile.close();
  jsonFile.close();
 
-
+cout<<"Lexage terminé"<<endl;
 return 0;
+}
+
+void lectureChaine(vector<string>& chaine){
+	for(int i=0; i<chaine.size();i++){  //lecture de lChainJson
+	  cout << chaine[i] << endl;
+	}
 }
