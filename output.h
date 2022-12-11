@@ -1,5 +1,11 @@
-#include "blocs.h"
+#ifndef _OUTPUT_H_
+#define _OUTPUT_H_
+
 #include <iostream>
+#include <string>
+#include <vector>
+#include <fstream>
+#include "blocs.h"
 
 using namespace std;
 
@@ -10,4 +16,6 @@ public :
   ~output();
   bool netValue;
   bool* getAdr();
+  
 };
+#endif

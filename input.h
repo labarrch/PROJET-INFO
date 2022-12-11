@@ -1,7 +1,13 @@
-#include "blocs.h"
+#ifndef _INPUT_H_
+#define _INPUT_H_
+
 #include <iostream>
 #include <string>
-#include <string.h>
+#include <vector>
+#include <fstream>
+#include "blocs.h"
+
+using namespace std;
 
 class input : public bloc {
   public :
@@ -10,5 +16,8 @@ class input : public bloc {
   input(string nom);
   ~input();
   bool *netValue;
-  void setDest(bool &dest);
+  void setDest(bool* dest);
+  void setVal(bool val);
 };
+
+#endif

@@ -1,8 +1,16 @@
-int lineProcess(string line, vector<string>& list);
-int lineProcessJson(string line, vector<string>& list);
-int characAlpha(string charac);
-int characSymb(string charac);
-int characAlphaJson(string charac);
-int characSymbJson(string charac);
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
 
-int lexeur(vector<string>& lChainDot, vector<string>& lChainJson);
+using namespace std;
+
+int lineProcess(const string line, vector<string>& list); //Fonction qui traite le lexage d'une ligne de dot
+int lineProcessJson(const string line, vector<string>& list);  //Fonction qui traite le lexage d'une ligne de json
+int characAlpha(const string charac); //Fonction de vérifiction d'apartenance aux caractères alphanumériques autorisés en dot
+int characSymb(const string charac);  //Fonction de vérifiction d'apartenance aux symboles/poncuations autorisés en dot
+int characAlphaJson(const string charac);  //Fonction de vérifiction d'apartenance aux caractères alphanumériques autorisés en json
+int characSymbJson(const string charac);   //Fonction de vérifiction d'apartenance aux symboles/poncuations autorisés en json
+int characWaveJson(const string charac, int lineCount);   //Fonction de vérifiction d'apartenance aux symboles/poncuations autorisés en json
+int lexeur(const char* fichierDot, const char* fichierJson,vector<string>& lChainDot, vector<string>& lChainJson);   //Fonction qui réalise le lexage des fichiers
+void lectureChaine(vector<string>& chaine);

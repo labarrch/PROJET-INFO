@@ -1,7 +1,13 @@
-#include "blocs.h"
+#ifndef _OR2_H_
+#define _OR2_H_
+
 #include <iostream>
 #include <string>
-#include <string.h>
+#include <vector>
+#include <fstream>
+#include "blocs.h"
+
+using namespace std;
 
 class or2 : public bloc {
   public :
@@ -9,8 +15,10 @@ class or2 : public bloc {
     ~or2();
     bool in1, in2;
     bool *out;
-    bool firstUse;
+    bool firstUse, alreadyDest;
+    void calculate();
     void calculate(bool& out);
-    void setDest(bool &dest);
+    void setDest(bool *dest);
     bool* getAdr();
 };
+#endif

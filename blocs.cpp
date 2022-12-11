@@ -1,17 +1,4 @@
-class bloc{
-  public :
-    string name;
-    string type;
-
-    bloc();
-    ~bloc();
-
-    virtual void setDest(bool* dest);
-    virtual void setDestTest();
-    virtual bool* getAdr();
-    virtual void setVal(bool val);
-};
-
+#include "blocs.h"
 
 bloc::bloc(){}
 bloc::~bloc(){}
