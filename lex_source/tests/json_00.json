@@ -1,0 +1,8 @@
+alpha { signal: [
+  { name: "CK",   wave: "P.......",       },
+  { name: "CK",   wave: "P.......",       },
+  { name: "CMD",  wave: "x.3x=x4x=x=x=x=x"},
+  { name: "ADDR", wave: "x.=x..=x........"},
+  { name: "DQS",  wave: "z.......0.1010z." },
+  { name: "DQ",   wave: "z.........5555z.",}
+]}
