@@ -1,23 +1,4 @@
-class objet
-{
-  friend class clist;
-public :
-
-  objet(input *o);
-  objet(output *o);
-  objet(and2 *o);
-  objet(or2 *o);
-
-  int type;
-
-   input* pointi;
-   output* pointo;
-   and2* pointa;
-   or2* pointor;
-
-   objet* next;        // L'adresse du suivant.
-
-};
+#include "objet.h"
 
 objet::objet(input *o){
   pointi = o;
@@ -34,4 +15,8 @@ objet::objet(and2 *o){
 objet::objet(or2 *o){
   pointor = o;
   type = 3;
+}
+objet::objet(xor2 *o){
+  pointxor = o;
+  type = 4;
 }

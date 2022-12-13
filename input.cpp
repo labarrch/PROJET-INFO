@@ -1,15 +1,19 @@
+#include "input.h"
 
-class input : public bloc {
-  public :
-  input(string nom, bool& adrSuiv, bool value);
-  input(string nom, bool& adrSuiv);
-  input(string nom);
-  ~input();
-  bool *netValue;
-  void setDest(bool* dest);
-  void setVal(bool val);
-};
+using namespace std;
 
+
+input &input::operator = (const input & copie)
+{
+    // pour éviter l'autoaffectation : P = P
+    if (this == & copie) return *this;
+
+    name = copie.name;
+    if (netValue){
+      netValue = copie.netValue;
+    }
+    return *this;
+}
 
 input::input(string nom){
   name = nom;
@@ -33,9 +37,6 @@ input::input(string nom, bool& adrSuiv){
     name = nom;
   type = "input";
   netValue = &adrSuiv;
-}
-
-input::~input(){
 }
 
 void input::setDest(bool* dest){

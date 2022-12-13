@@ -1,16 +1,21 @@
-class and2 : public bloc {
-  public :
-    and2(string nom);
-    ~and2();
-    bool in1, in2;
-    bool *out;
-    bool firstUse, alreadyDest;
-    void calculate(bool& out);
-    void calculate();
-    void setDest(bool* dest);
-    bool* getAdr();
-};
+#include "and2.h"
 
+using namespace std;
+
+and2 & and2::operator = (const and2 & copie)
+{
+    // pour éviter l'autoaffectation : P = P
+    if (this == & copie) return *this;
+
+    name = copie.name;
+    in1 = copie.in1;
+    in2 = copie.in2;
+    if (out)
+    {
+      out = copie.out;
+    }
+    return *this;
+}
 
 and2::and2(string nom){
   name = nom;
@@ -19,16 +24,13 @@ and2::and2(string nom){
   type = "function";
   firstUse = false;
   alreadyDest=false;
-}
-and2::~and2(){
-}
-void and2::calculate(bool& out){
-    out = in1&in2;
-}
-void and2::calculate(){
-    *out = in1&in2;
+  full = false;
 }
 
+int and2::calculate(){
+        *out = in1 & in2;
+        return 0;
+}
 
 void and2::setDest(bool* dest){
   alreadyDest=true;
@@ -40,6 +42,7 @@ bool* and2::getAdr(){
     return &in1;
   }
   else{
+    full = true;
     return &in2;
   }
 }

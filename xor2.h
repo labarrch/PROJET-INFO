@@ -1,5 +1,5 @@
-#ifndef _AND2_H_
-#define _AND2_H_
+#ifndef _XOR_H_
+#define _XOR_H_
 
 #include <iostream>
 #include <string>
@@ -9,17 +9,17 @@
 
 using namespace std;
 
-class and2 : public bloc {
+class xor2 : public bloc {
   public :
-    and2(string nom);
-    ~and2(){};
-    and2(){};
+    xor2(string nom);
+    xor2(){};
+    ~xor2();
     bool in1, in2;
     bool *out;
     bool firstUse, alreadyDest, full;
-    and2 &operator =(const and2& copie);
+    xor2 &operator =(const xor2& copie);
     int calculate();
-    void setDest(bool* dest);
+    void setDest(bool *dest);
     bool* getAdr();
 };
 #endif
