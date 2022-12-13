@@ -22,6 +22,15 @@ void add_byname(clist firstlist, clist mainlist[], string name, int rank);
 void set_byname(clist mainlist[], string nom, bool value, int longueur);
 bool get_byname(clist mainlist[], string nom, int longueur);
 
+void to_upper(vector<string> &chaine);
+void to_upper(vector<string> &chaine){
+  for (int i = 0; i < chaine.size(); i++) {
+    for (int j = 0; j < chaine[i].size(); j++) {
+      chaine[i][j] = toupper(chaine[i][j]);
+    }
+  }
+}
+
 void set_byname(clist mainlist[], string nom, bool value, int longueur){
   for(int i=0; i<longueur; i++){
     for(int j=0 ;j<mainlist[i].taille; j++){
@@ -94,6 +103,8 @@ and2 creer_and2 (string nom){
 }
 
 
+
+
 int main(int argc, char* argv[]){
 
 vector<string> lChainDot;
@@ -108,14 +119,11 @@ vector<string> lChainJson;
     and2 xand[10];
     ou xou[10];
 
-    /*xout = creer_output("o1");
-    firstlist.add_end(&xout);
-    xout = creer_output("o2");
-    firstlist.add_end(&xout);*/
+    ///toupper(test)
+
     xout[i] = creer_output("o1");
     firstlist.add_end(&xout[i]);
     i++;
-
     xout[i] = creer_output("o2");
     firstlist.add_end(&xout[i]);
     i++;
@@ -169,7 +177,7 @@ vector<string> lChainJson;
 
     connecterBlocs(mainlist, longueur);
 
-    set_byname(mainlist, "i1", false, longueur);
+    set_byname(mainlist, "i1", true, longueur);
     set_byname(mainlist, "i2", false, longueur);
 
     calculer(mainlist, longueur);
