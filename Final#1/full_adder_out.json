@@ -1,0 +1,9 @@
+{ signal: [
+  { name: "A", wave: 'l...h...' },
+  { name: "B", wave: 'l.h.l.h.' },
+  { name: "C", wave: 'lhlhlhlh' },
+  {},
+  { name: "SUM", wave: 'lh.lhl.h' },
+  { name: "C_OUT", wave: 'l..hlh..' },
+
+]}
