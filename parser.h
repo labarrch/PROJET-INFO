@@ -32,8 +32,10 @@
 
 using namespace std;
 
-    int Verif_taille();
-    void Verif_synt();
+    int Verif_taille_dot();
+    void Verif_synt_dot();
+    void Verif_synt_json();
+    void verif_list(clist mainlist[], int cpt_list, string nom);
     void Parse(int cpt_list, vector<string> &lChainDot);
     void To_Upper(vector<string>& lChainDot);
     input creer_input(string name);
@@ -41,12 +43,10 @@ using namespace std;
     and2 creer_and(string name);
     or2 creer_or(string name);
     xor2 creer_xor(string name);
-    //void compteurs();
     void compteurs(vector<string> &lChainDot, int &cpt_input, int &cpt_output, int &cpt_or2, int &cpt_and2, int &cpt_xor2);
     void add_byname(clist firstlist, clist mainlist[], string name, int rank);
     void set_byname(clist mainlist[], string nom, bool value, int longueur);
     bool get_byname(clist mainlist[], string nom, int longueur);
-    //bool UselessLine(string line);
     //friend ostream& operator <<(ostream& out, const  Parseur &f);
 
 

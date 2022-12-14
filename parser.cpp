@@ -1,15 +1,58 @@
 #include "parser.h"
 
 using namespace std;
-//static int var = 0;
-//#define ADEFINE (++var)
 
 vector<string> lChainDot;
 vector<string> lChainJson;
 
 const char * dot = "full_adder.dot";
-//const char * dot = "and2.dot";
-const char * json = "full_adder.dot";
+
+const char * json = "test.json";
+
+void verif_list(clist first_list, int cpt_list, string nom)
+{
+  for (int j = 0; j < first_list.taille; j++)
+  {
+    switch (first_list.adresse_position_n(j)->type)
+    {
+      case 0 :
+      if(first_list.adresse_position_n(j)->pointi->name == nom)
+      {
+        cout<<"erreur syntaxe : labels avec memes noms"<<endl;
+        exit(1);
+      }
+        break;
+      case 1 :
+      if(first_list.adresse_position_n(j)->pointo->name == nom)
+      {
+        cout<<"erreur syntaxe : labels avec memes noms"<<endl;
+        exit(1);
+      }
+        break;
+      case 2 :
+      if(first_list.adresse_position_n(j)->pointa->name == nom)
+      {
+        cout<<"erreur syntaxe : labels avec memes noms"<<endl;
+        exit(1);
+      }
+        break;
+      case 3 :
+      if(first_list.adresse_position_n(j)->pointor->name == nom)
+      {
+        cout<<"erreur syntaxe : labels avec memes noms"<<endl;
+        exit(1);
+      }
+        break;
+      case 4 :
+      if(first_list.adresse_position_n(j)->pointxor->name == nom)
+      {
+      cout<<"erreur syntaxe : labels avec memes noms"<<endl;
+      exit(1);
+      }
+        break;
+    }
+  }
+}
 
 void compteurs(vector<string> &lChainDot, int &cpt_input, int &cpt_output, int &cpt_or2, int &cpt_and2, int &cpt_xor2)
 {
@@ -108,17 +151,9 @@ bool get_byname(clist mainlist[], string nom, int longueur){
       }
     }
   }
-  // cout<<nom<<" n'existe pas"<<endl;
-  // return false;
-  // exit(1);
 }
 
 void add_byname(clist firstlist, clist mainlist[], string name, int rank){
-
-  output xout;
-  input xin;
-  and2 xand;
-  or2 xou;
 
   for (int j = 0; j < firstlist.taille; j++) {
     switch (firstlist.adresse_position_n(j)->type){
@@ -162,7 +197,7 @@ void To_Upper(vector<string>& lChainDot)
   }
 }
 
-int Verif_taille()
+int Verif_taille_dot()
 {
   int i = 0;
   string line;
@@ -189,7 +224,7 @@ int Verif_taille()
   return cpt;
 }
 
-void Verif_synt()
+void Verif_synt_dot()
 {
     int chain_size = lChainDot.size();
     int last_string = chain_size-1;
@@ -215,7 +250,6 @@ void Verif_synt()
     string line;
     int i = 0;
 
-
     while(&lChainDot[i] && i < chain_size)
     {
       line = lChainDot[i];
@@ -228,6 +262,22 @@ void Verif_synt()
       digraph = (line.find("DIGRAPH"));
       accol_open = (line.find('{'));
       accol_close = (line.find('}'));
+      fpv = line.find(';');
+
+      if(fpv != -1 && i+1 != last_string)
+      {
+        fpv = -1;
+        line = lChainDot[i+2];
+        croch_open = (line.find('['));
+        ffleche = (line.find("->"));
+        if(croch_open == -1 && ffleche == -1)
+        {
+          cout<<"erreur syntaxe"<<endl;
+          exit(1);
+        }
+        ffleche = -1;
+        croch_open = -1;
+      }
 
       if(accol_close == -1 && i == last_string){
         cout<<"erreur syntaxe : accolade fermante manquante"<<endl;
@@ -370,7 +420,6 @@ void Verif_synt()
 
     if(cpt_croch_open != cpt_croch_close || cpt_croch_open != cpt_egal || cpt_croch_open != cpt_label || cpt_croch_close != cpt_egal || cpt_croch_close != cpt_label || cpt_egal != cpt_label)
     {
-      cout<<"cpt_crocho"<<cpt_croch_open<<"cpt_crochf"<<cpt_croch_close<<"cpt_label"<<cpt_label<<"cpt_egal"<<cpt_egal<<endl;
       cout<<"erreur syntaxe"<<endl;
       exit(1);
     }
@@ -385,6 +434,323 @@ void Verif_synt()
       cout << "erreur syntaxe guillemets<<"<<endl;
       exit(1);
     }
+}
+
+void Verif_synt_json()
+{
+  int chain_size = lChainJson.size();
+  int last_string = chain_size-1;
+  int cpt_guill=0;
+  int cpt_apost=0;
+  int cpt_croch_open=0;
+  int cpt_croch_close=0;
+  int cpt_accol_open=0;
+  int cpt_accol_close=0;
+  int cpt_dp = 0;
+  int cpt_name = 0;
+  int cpt_wave = 0;
+  int cpt_signal = 0;
+  int cpt_vg = 0;
+  int apost = -1;
+  int guill=-1;
+  int croch_open=-1;
+  int croch_close=-1;
+  int accol_open = -1;
+  int accol_close = -1;
+  int fsignal = -1;
+  int dp = -1;
+  int fname = -1;
+  int fwave = -1;
+  int fvg = -1;
+  int cpt = 0;
+
+
+
+  string line;
+  int i = 0;
+
+  while(&lChainJson[i] && i < chain_size)
+  {
+    line = lChainJson[i];
+    lChainJson[132];
+    croch_open = (line.find('['));
+    croch_close = (line.find(']'));
+    guill = (line.find('"'));
+    apost = (line.find("'"));
+    accol_open = (line.find('{'));
+    accol_close = (line.find('}'));
+    fsignal = line.find("SIGNAL");
+    fwave = line.find("WAVE");
+    fname = line.find("NAME");
+    fvg = line.find(',');
+    dp = line.find(':');
+
+    if(guill != -1)
+    {
+      cpt_guill += 1;
+      guill = -1;
+    }
+    if(apost != -1)
+    {
+      cpt_apost += 1;
+      apost = -1;
+    }
+    if(croch_open != -1)
+    {
+      cpt_croch_open += 1;
+      croch_open = -1;
+    }
+    if(croch_close != -1)
+    {
+      cpt_croch_close += 1;
+      croch_close = -1;
+    }
+    if(accol_open != -1)
+    {
+      cpt_accol_open += 1;
+      accol_open = -1;
+    }
+    if(accol_close != -1)
+    {
+      cpt_accol_close += 1;
+      accol_close = -1;
+    }
+    if(dp != -1)
+    {
+      cpt_dp += 1;
+      dp = -1;
+    }
+    if(fname != -1)
+    {
+      cpt_name += 1;
+      fname = -1;
+    }
+    if(fwave != -1)
+    {
+      cpt_wave += 1;
+      fwave = -1;
+    }
+    if(fsignal != -1)
+    {
+      cpt_signal += 1;
+      fsignal = -1;
+    }
+    if(fvg != -1)
+    {
+      cpt_vg += 1;
+      fvg = -1;
+    }
+
+    fwave = line.find("WAVE");
+
+    if(fwave != -1)
+    {
+      fwave = -1;
+      line = lChainJson[i+3];
+      if(cpt == 0)
+      {
+        cpt = line.size();
+      }
+      else if(line.size() != cpt)
+      {
+        cout<<"tailles de waves innegales"<<endl;
+        exit(1);
+      }
+    }
+
+    if(fname != -1)
+    {
+      fname = -1;
+      line = lChainJson[i+1];
+      dp = line.find(':');
+      if(dp == -1)
+      {
+        cout<<"erreur syntaxe : pas de ':' devant name"<<endl;
+        exit(1);
+      }
+      dp = -1;
+      line = lChainJson[i+6];
+      fwave = line.find("WAVE");
+      if(fwave == -1)
+      {
+        cout<<"erreur syntaxe"<<endl;
+        exit(1);
+      }
+      fwave = -1;
+      line = lChainJson[i+2];
+      apost = line.find("'");
+      guill = line.find('"');
+      if(apost == -1 && guill == -1)
+      {
+        cout<<"erreur syntaxe : apostrophe ou guillemet manquant apres 'name:'"<<endl;
+        exit(1);
+      }
+      apost = -1;
+      guill = -1;
+      line = lChainJson[i-1];
+      accol_open = line.find('{');
+      if(accol_open == -1)
+      {
+        cout<<"erreur syntaxe : pas d'accolade ouvrante avant name"<<endl;
+        exit(1);
+      }
+      accol_open = -1;
+    }
+
+    if(fwave != -1)
+    {
+      fwave = -1;
+      line = lChainJson[i+1];
+      dp = line.find(':');
+      if(dp == -1)
+      {
+        cout<<"erreur syntaxe : pas de ':' devant wave"<<endl;
+        exit(1);
+      }
+      dp = -1;
+      line = lChainJson[i+2];
+      apost = line.find("'");
+      if(apost == -1)
+      {
+        cout<<"erreur syntaxe : apostrophe manquante apres 'wave:'"<<endl;
+        exit(1);
+      }
+      apost = -1;
+      line = lChainJson[i-6];
+      fname = line.find("NAME");
+      if(fname == -1)
+      {
+        cout<<"erreur syntaxe"<<endl;
+        exit(1);
+      }
+      fname = -1;
+      line = lChainJson[i+5];
+      accol_close = line.find('}');
+      if(accol_close == -1)
+      {
+        cout<<"erreur syntaxe : accolade fermante manquante"<<endl;
+        exit(1);
+      }
+      accol_close = -1;
+    }
+
+    if(apost != -1)
+    {
+      apost = -1;
+      line = lChainJson[i-1];
+      dp = line.find(':');
+      if(dp != -1)
+      {
+        dp = -1;
+        line = lChainJson[i+2];
+        apost = line.find("'");
+        if(apost == -1)
+        {
+          cout<<"erreur syntaxe : apostrophe manquante"<<endl;
+          exit(1);
+        }
+        apost = -1;
+      }
+    }
+
+    if(guill != -1)
+    {
+      guill = -1;
+      line = lChainJson[i-1];
+      dp = line.find(':');
+      if(dp != -1)
+      {
+        dp = -1;
+        line = lChainJson[i+2];
+        guill = line.find('"');
+        if(guill == -1)
+        {
+          cout<<"erreur syntaxe : guillemet manquant"<<endl;
+          exit(1);
+        }
+        guill = -1;
+      }
+
+    }
+
+    if(fvg != -1)
+    {
+      fvg = -1;
+      line = lChainJson[i-1];
+      accol_close = line.find('}');
+      guill = line.find('"');
+      apost = line.find("'");
+      if(accol_close == -1 && apost == -1 && guill == -1)
+      {
+        cout<<"erreur syntaxe virgule "<<endl;
+        exit(1);
+      }
+    }
+
+    if(accol_open != -1 && i == 0)
+    {
+      line = lChainJson[i+1];
+      fsignal = line.find("SIGNAL");
+      if(fsignal == -1)
+      {
+        cout<<"erreur syntaxe : signal manquant ou au mauvais endroit"<<endl;
+        exit(1);
+      }
+      fsignal = -1;
+      line = lChainJson[i+2];
+      dp =(line.find(':'));
+      if(dp == -1)
+      {
+        cout<<"erreur syntaxe : deux points manquants apres signal"<<endl;
+        exit(1);
+      }
+      dp = -1;
+      line = lChainJson[i+3];
+      croch_open =(line.find('['));
+      if(croch_open == -1)
+      {
+        cout<<"erreur syntaxe : crochet ouvrant manquant"<<endl;
+        exit(1);
+      }
+    }
+    if(accol_close != -1 && i == last_string)
+    {
+      cout<<"erreur syntaxe : accolade fermante manquante"<<endl;
+      exit(1);
+    }
+
+    if(croch_close != -1 && i == last_string-1)
+    {
+      cout<<"erreur syntaxe : crochet fermant manquant"<<endl;
+      exit(1);
+    }
+    i++;
+  }
+  if(cpt_accol_open != cpt_accol_close || cpt_croch_open != cpt_croch_close || cpt_name+cpt_wave+cpt_signal != cpt_dp || cpt_wave != cpt_name|| cpt_signal !=1 || cpt_wave != cpt_name)
+  {
+        cout<<"cpt_accol_open"<<cpt_accol_open<<endl;
+            cout<<"cpt_accol_close"<<cpt_accol_close<<endl;
+                cout<<"cpt_croch_open"<<cpt_croch_open<<endl;
+                    cout<<"cpt_croch_close"<<cpt_croch_close<<endl;
+                        cout<<"wave"<<cpt_wave<<endl;
+                            cout<<"name"<<cpt_name<<endl;
+                                cout<<"signal"<<cpt_signal<<endl;
+                                    cout<<"deux points"<<cpt_dp<<endl;
+                                        cout<<"virgule"<<cpt_vg<<endl;
+    cout<<"erreur syntaxe comptage "<<endl;
+    exit(1);
+  }
+
+  if(cpt_guill % 2 != 0)
+  {
+    cout << "erreur syntaxe guillemets<<"<<endl;
+    exit(1);
+  }
+  if(cpt_apost % 2 != 0)
+  {
+    cout << "erreur syntaxe apostrophes<<"<<endl;
+    exit(1);
+  }
 }
 
 void Parse(int cpt_list, vector<string> &lChainDot)
@@ -442,32 +808,35 @@ void Parse(int cpt_list, vector<string> &lChainDot)
         {
           if(Biblio[b] == "INPUT")
           {
+            verif_list(first_list, cpt_list, lChainDot[i-5]);
             x_in[itr_in] = creer_input(lChainDot[i-5]);
             first_list.add_end(&x_in[itr_in]);
             itr_in++;
-
           }
           else if(Biblio[b] == "OUTPUT")
           {
+            verif_list(first_list, cpt_list, lChainDot[i-5]);
             x_out[itr_out] = creer_output(lChainDot[i-5]);
             first_list.add_end(&x_out[itr_out]);
             itr_out++;
-
           }
           else if(Biblio[b] == "AND2")
           {
+            verif_list(first_list, cpt_list, lChainDot[i-5]);
             x_and[itr_and] = creer_and(lChainDot[i-5]);
             first_list.add_end(&x_and[itr_and]);
             itr_and++;
           }
           else if(Biblio[b] == "OR2")
           {
+            verif_list(first_list, cpt_list, lChainDot[i-5]);
             x_or[itr_or] = creer_or(lChainDot[i-5]);
             first_list.add_end(&x_or[itr_or]);
             itr_or++;
           }
           else if(Biblio[b] == "XOR2")
           {
+            verif_list(first_list, cpt_list, lChainDot[i-5]);
             x_xor[itr_xor] = creer_xor(lChainDot[i-5]);
             first_list.add_end(&x_xor[itr_xor]);
             itr_xor++;
@@ -497,25 +866,25 @@ void Parse(int cpt_list, vector<string> &lChainDot)
       }
       afficherNoms(mainlist, cpt_list);
       connecterBlocs(mainlist, cpt_list);
-      // cout<<mainlist[0].adresse_position_n(2)->pointxor->out<<endl;
-      // cout<<&mainlist[2].adresse_position_n(2)->pointo->netValue<<endl;
-      set_byname(mainlist,"A",true,cpt_list);
-      set_byname(mainlist,"B",true,cpt_list);
-      set_byname(mainlist,"C",true,cpt_list);
-      calculer(mainlist, cpt_list);
-
-      cout<<"Resulat : C_OUT = "<<get_byname(mainlist,"C_OUT",cpt_list)<<"   SUM = "<<get_byname(mainlist,"SUM",cpt_list)<<endl;
+      // set_byname(mainlist,"A",true,cpt_list);
+      // set_byname(mainlist,"A",true,cpt_list);
+      // set_byname(mainlist,"C",true,cpt_list);
+      // calculer(mainlist, cpt_list);
+      // cout<<"Resultat : C_OUT = "<<get_byname(mainlist,"C_OUT",cpt_list)<<"   SUM = "<<get_byname(mainlist,"SUM",cpt_list)<<endl;
     }
-
-
 
 int main(){
   int resultat = lexeur(dot,json,lChainDot,lChainJson);
   To_Upper(lChainDot);
+  To_Upper(lChainJson);
+  cout<<"chaine DOT : "<<endl;
   lectureChaine(lChainDot);
-  int cpt_list = Verif_taille();
-  Verif_synt();
-  Parse(cpt_list, lChainDot);
+  cout<<"chaine JSON : "<<endl;
+  lectureChaine(lChainJson);
+  int cpt_list = Verif_taille_dot();
+  Verif_synt_dot();
+  Verif_synt_json();
+  //Parse(cpt_list, lChainDot);
   return 0;
 }
 
